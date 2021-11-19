@@ -9,7 +9,11 @@ class CoinCapRepositoryImpl: ICoinCapRepository {
     private val client = CoinCapAPIRetrofitClient()
 
     override suspend fun geAssets(page: Int): List<Asset> {
-        return client.getAssets(page).data
+        println("~~~CoinCapRepositoryImpl = geAssets")
+        //return client.getAssets(page).data
+        val res = client.getAssets(page).data
+        println(res)
+        return res
     }
 
 }

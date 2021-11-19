@@ -1,4 +1,4 @@
-package ru.sinitsyndev.rs_shcool_final_task.mainScreen
+package ru.sinitsyndev.rs_shcool_final_task.mainScreen.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -9,10 +9,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import ru.sinitsyndev.rs_shcool_final_task.R
 import ru.sinitsyndev.rs_shcool_final_task.appComponent
+import javax.inject.Inject
 
 class MainFragment : Fragment() {
 
-    private val viewModel: MainViewModel by viewModels()
+ //   private val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels{
+        factory.create()
+    }
+    @Inject
+    lateinit var factory: MainViewModelFactory.Factory
+
 
     override fun onAttach(context: Context) {
         context.appComponent.inject(this)

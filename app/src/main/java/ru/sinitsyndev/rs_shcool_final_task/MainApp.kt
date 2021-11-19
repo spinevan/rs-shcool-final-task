@@ -6,6 +6,8 @@ import ru.sinitsyndev.rs_shcool_final_task.dagger.AppComponent
 import ru.sinitsyndev.rs_shcool_final_task.dagger.AppModule
 import ru.sinitsyndev.rs_shcool_final_task.dagger.DaggerAppComponent
 
+//import ru.sinitsyndev.rs_shcool_final_task.dagger.DaggerAppComponent
+
 class MainApp : Application() {
     lateinit var appComponent: AppComponent
         private set
@@ -13,7 +15,7 @@ class MainApp : Application() {
     override fun onCreate() {
         super.onCreate()
         appComponent = DaggerAppComponent.builder()
-            .appModule(AppModule(this))
+            .context(context = this)
             .build()
     }
 }
