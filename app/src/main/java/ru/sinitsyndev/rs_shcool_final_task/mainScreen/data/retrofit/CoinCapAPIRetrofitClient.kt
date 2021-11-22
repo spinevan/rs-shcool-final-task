@@ -18,8 +18,5 @@ class CoinCapAPIRetrofitClient {
     private val coinCapAPIService = retrofit.create(CoinCapAPI::class.java)
 
     suspend fun getAssets(page: Int): AssetsList =
-        withContext(Dispatchers.IO) {
-            coinCapAPIService.getAssets(page * COIN_CAP_API_ITEMS_PER_PAGE)
-        }
-
+        coinCapAPIService.getAssets(page * COIN_CAP_API_ITEMS_PER_PAGE)
 }
