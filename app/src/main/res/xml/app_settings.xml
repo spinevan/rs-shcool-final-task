@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <SwitchPreference
+        android:key="@string/show_only_favorites"
+        android:title="@string/show_only_favorites"
+        android:defaultValue="false"
+        />
+    <SwitchPreference
+        android:key="@string/use_night_theme"
+        android:title="@string/use_night_theme"
+        android:defaultValue="false"
+        />
+</PreferenceScreen>

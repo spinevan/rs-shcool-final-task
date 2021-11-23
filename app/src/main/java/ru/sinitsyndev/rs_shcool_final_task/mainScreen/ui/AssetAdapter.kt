@@ -12,7 +12,7 @@ class AssetAdapter(private val listener: IAssetListener) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AssetViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = AssetItemViewBinding.inflate(layoutInflater, parent, false)
-        return AssetViewHolder(binding, listener, binding.root.context.resources)
+        return AssetViewHolder(binding, listener)
     }
 
     override fun onBindViewHolder(holder: AssetViewHolder, position: Int) {

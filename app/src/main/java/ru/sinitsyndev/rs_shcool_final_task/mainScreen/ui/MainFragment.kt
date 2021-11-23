@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -47,7 +48,7 @@ class MainFragment : Fragment(), IAssetListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -55,20 +56,31 @@ class MainFragment : Fragment(), IAssetListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.assetsRecycler.apply {
-            layoutManager = GridLayoutManager(context, COUNT_COLUMNS_ASSET_RECYCLER)
-            adapter = assetsAdapter
+        with(binding) {
+            assetsRecycler.apply {
+                layoutManager = GridLayoutManager(context, COUNT_COLUMNS_ASSET_RECYCLER)
+                adapter = assetsAdapter
+            }
+
+            reloadBtn.setOnClickListener {
+                viewModel.reloadOnError()
+            }
+
+            swiperefresh.setOnRefreshListener {
+                viewModel.resetPage()
+            }
+            topAppBar.setOnMenuItemClickListener {  menuItem ->
+                when (menuItem.itemId) {
+                    R.id.preferences -> {
+                        view.findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
+                        true
+                    }
+                    else -> false
+                }
+            }
+
         }
 
-        binding.reloadBtn.setOnClickListener {
-            viewModel.reloadOnError()
-        }
-
-        binding.swiperefresh.setOnRefreshListener {
-            viewModel.resetPage()
-        }
-
-//        binding.swiperefresh.isRefreshing
 
         lifecycleScope.launchWhenStarted {
             viewModel.assetsList.collect { items ->

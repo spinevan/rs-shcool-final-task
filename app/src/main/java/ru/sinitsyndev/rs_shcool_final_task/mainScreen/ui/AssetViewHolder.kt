@@ -7,8 +7,7 @@ import ru.sinitsyndev.rs_shcool_final_task.mainScreen.data.models.Asset
 
 class AssetViewHolder(
     private val binding: AssetItemViewBinding,
-    private val listener: IAssetListener,
-    private val resources: Resources
+    private val listener: IAssetListener
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(asset: Asset) {
@@ -16,8 +15,9 @@ class AssetViewHolder(
         with(binding) {
             name.text = asset.name
             symbol.text = asset.symbol
-            marketCapUsd.text = asset.marketCapUsd.toString()
-            volumeUsd24Hr.text = asset.marketCapUsd.toString()
+            marketCapUsd.text = String.format("%.0f", asset.marketCapUsd)
+            volumeUsd24Hr.text = String.format("%.0f", asset.volumeUsd24Hr)
+            rank.text = asset.rank.toString()
         }
 
     }
