@@ -1,22 +1,16 @@
 package ru.sinitsyndev.rs_shcool_final_task.mainScreen.ui
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
-import ru.sinitsyndev.rs_shcool_final_task.mainScreen.data.CoinCapRepositoryImpl
-import ru.sinitsyndev.rs_shcool_final_task.mainScreen.data.models.Asset
+import ru.sinitsyndev.rs_shcool_final_task.mainScreen.domain.AssetDecorator
 import ru.sinitsyndev.rs_shcool_final_task.mainScreen.domain.GetAssetsListUseCase
 import ru.sinitsyndev.rs_shcool_final_task.utils.LOG_TAG
 import ru.sinitsyndev.rs_shcool_final_task.utils.START_ASSETS_PAGE
@@ -34,10 +28,10 @@ class MainViewModel(private val getAssetsListUseCase: GetAssetsListUseCase): Vie
         _loading.value = false
     }
 
-    private val _assetsList = MutableSharedFlow<List<Asset>>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-    val assetsList: SharedFlow<List<Asset>> = _assetsList.asSharedFlow()
+    private val _assetsList = MutableSharedFlow<List<AssetDecorator>>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    val assetsList: SharedFlow<List<AssetDecorator>> = _assetsList.asSharedFlow()
 
-    private val assets: MutableList<Asset> = mutableListOf()
+    private val assets: MutableList<AssetDecorator> = mutableListOf()
 
     private val _errorLoading = MutableStateFlow(false)
     val errorLoading: StateFlow<Boolean> get() = _errorLoading.asStateFlow()
@@ -87,8 +81,6 @@ class MainViewModel(private val getAssetsListUseCase: GetAssetsListUseCase): Vie
             val newAssets = withContext(Dispatchers.IO){
                 return@withContext getAssetsListUseCase.exec(assetsPage)
             }
-            println("----!!!_______!!!---------------")
-            println(newAssets)
             assets.addAll(newAssets)
             _assetsList.tryEmit(assets.toList())
             _loading.value = false

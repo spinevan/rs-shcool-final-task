@@ -1,28 +1,19 @@
 package ru.sinitsyndev.rs_shcool_final_task.mainScreen.domain
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import ru.sinitsyndev.rs_shcool_final_task.mainScreen.data.CoinCapRepositoryImpl
-import ru.sinitsyndev.rs_shcool_final_task.mainScreen.data.ICoinCapRepository
-import ru.sinitsyndev.rs_shcool_final_task.mainScreen.data.models.Asset
+import ru.sinitsyndev.rs_shcool_final_task.data.CoinCapRepositoryImpl
 import javax.inject.Inject
 
-//class GetAssetsListUseCase @Inject constructor(private val repository: CoinCapRepositoryImpl) {
-//    suspend fun exec(page: Int): List<Asset> {
-//        return repository.geAssets(page)
-//    }
-//}
+class GetAssetsListUseCase @Inject constructor(
+    private val repository: CoinCapRepositoryImpl
+    ) {
 
-class GetAssetsListUseCase @Inject constructor(private val repository: CoinCapRepositoryImpl) {
-    suspend fun exec(page: Int): List<Asset> {
-//        println("~~~getAssetsListUseCasegetAssetsListUseCasegetAssetsListUseCasegetAssetsListUseCase")
-//        return withContext(Dispatchers.IO) {
-//           repository.geAssets(page)
-//        }
-        val res = repository.geAssets(page)
-        //println(res)
+    suspend fun exec(page: Int): List<AssetDecorator> {
+
+        val listAssets = repository.geAssets(page)
+        val res: MutableList<AssetDecorator> = mutableListOf()
+        listAssets.map {    asset ->
+            res.add(AssetDecorator(asset))
+        }
         return res
-    //return repository.geAssets(page)
-
     }
 }

@@ -2,6 +2,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
@@ -24,16 +25,17 @@
 
         <TextView
             android:id="@+id/name"
+            style="@style/CardTitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/symbol"
-            tools:text="Bitcoin"
-            style="@style/CardTitleText"/>
+            tools:text="Bitcoin" />
 
         <TextView
             android:id="@+id/marketCapUsd"
+            style="@style/CardDetailText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -41,8 +43,7 @@
             app:layout_constraintHorizontal_bias="0.591"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4"
-            tools:text="119179791817.6740161068269075"
-            style="@style/CardDetailText"/>
+            tools:text="119179791817.6740161068269075" />
 
         <TextView
             android:id="@+id/textView4"
@@ -68,14 +69,14 @@
 
         <TextView
             android:id="@+id/volumeUsd24Hr"
+            style="@style/CardDetailText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5"
-            tools:text="2928356777.6066665425687196"
-            style="@style/CardDetailText"/>
+            tools:text="2928356777.6066665425687196" />
 
         <TextView
             android:id="@+id/rank"
@@ -83,7 +84,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="1"/>
+            tools:text="1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

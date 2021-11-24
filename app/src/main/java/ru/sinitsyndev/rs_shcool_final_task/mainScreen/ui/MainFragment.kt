@@ -6,17 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import ru.sinitsyndev.rs_shcool_final_task.R
 import ru.sinitsyndev.rs_shcool_final_task.appComponent
+import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.AssetDetailsFragment
 import ru.sinitsyndev.rs_shcool_final_task.databinding.FragmentMainBinding
-import ru.sinitsyndev.rs_shcool_final_task.mainScreen.data.models.Asset
 import ru.sinitsyndev.rs_shcool_final_task.utils.COUNT_COLUMNS_ASSET_RECYCLER
 import javax.inject.Inject
 
@@ -116,6 +116,10 @@ class MainFragment : Fragment(), IAssetListener {
 
     override fun loadNextPage() {
         viewModel.loadNextAssetsPage()
+    }
+
+    override fun openAssetDetail(id: String) {
+        view?.findNavController()?.navigate(R.id.action_mainFragment_to_assetDetailsFragment, bundleOf(AssetDetailsFragment.ASSET_ID to id))
     }
 
     companion object {

@@ -1,4 +1,4 @@
-package ru.sinitsyndev.rs_shcool_final_task.mainScreen.data.models
+package ru.sinitsyndev.rs_shcool_final_task.data.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
