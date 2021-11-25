@@ -10,6 +10,7 @@ data class AssetDecorator(private val asset: Asset) {
     var marketCapUsd: String = ""
     var volumeUsd24Hr: String = ""
     var rank: String = ""
+    var price: String = ""
 
     init {
         id = asset.id
@@ -18,5 +19,6 @@ data class AssetDecorator(private val asset: Asset) {
         marketCapUsd = String.format("%.0f", asset.marketCapUsd)+"$"
         volumeUsd24Hr = String.format("%.0f", asset.volumeUsd24Hr)+"$"
         rank = asset.rank.toString()
+        price = String.format("%.6f", asset.priceUsd)+"$"
     }
 }

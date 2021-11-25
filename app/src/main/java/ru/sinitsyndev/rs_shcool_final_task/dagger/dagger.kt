@@ -4,7 +4,8 @@ import android.content.Context
 import dagger.*
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.AssetDetailsFragment
+import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.domain.GetAssetDetailsUseCase
+import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.ui.AssetDetailsFragment
 import ru.sinitsyndev.rs_shcool_final_task.data.CoinCapRepositoryImpl
 import ru.sinitsyndev.rs_shcool_final_task.data.ICoinCapRepository
 import ru.sinitsyndev.rs_shcool_final_task.data.retrofit.CoinCapAPI
@@ -49,6 +50,9 @@ interface AppBindModule {
 class UseCaseModule {
     @Provides
     fun provideGetAssetsListUseCase(repository: CoinCapRepositoryImpl) = GetAssetsListUseCase(repository)
+
+    @Provides
+    fun provideGetAssetDetailsUseCase(repository: CoinCapRepositoryImpl) = GetAssetDetailsUseCase(repository)
 }
 
 @Module

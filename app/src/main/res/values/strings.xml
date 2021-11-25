@@ -5,6 +5,14 @@
     <string name="retry">Retry</string>
     <string name="show_only_favorites">Show only favorites</string>
     <string name="use_night_theme">Night theme</string>
-    <string name="market_cap_usd">Market Cap, usd</string>
-    <string name="volume_24hr_usd">volume 24Hr, usd</string>
+    <string name="market_cap_usd">Market Cap</string>
+    <string name="volume_24hr_usd">Volume 24Hr</string>
+    <string name="price">Price</string>
+    <string name="rank">Rank</string>
+    <string name="symbol">Symbol</string>
+    <string name="name">Name</string>
+    <string name="supply">Supply</string>
+    <string name="max_supply">Max supply</string>
+    <string name="change_24hr">Change % 24Hr</string>
+    <string name="vwap_24hr">Vwap 24Hr</string>
 </resources>

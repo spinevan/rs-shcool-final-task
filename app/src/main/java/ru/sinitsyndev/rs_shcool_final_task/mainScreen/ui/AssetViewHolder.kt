@@ -17,6 +17,7 @@ class AssetViewHolder(
             marketCapUsd.text = asset.marketCapUsd
             volumeUsd24Hr.text = asset.volumeUsd24Hr
             rank.text = asset.rank
+            price.text = asset.price
 
             root.setOnClickListener {
                 listener.openAssetDetail(asset.id)

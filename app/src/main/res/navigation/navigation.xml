@@ -23,7 +23,7 @@
         android:label="SettingsFragment" />
     <fragment
         android:id="@+id/assetDetailsFragment"
-        android:name="ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.AssetDetailsFragment"
+        android:name="ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.ui.AssetDetailsFragment"
         android:label="fragment_asset_details"
         tools:layout="@layout/fragment_asset_details" />
 </navigation>

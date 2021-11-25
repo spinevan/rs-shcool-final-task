@@ -19,7 +19,7 @@ class AssetAdapter(private val listener: IAssetListener) :
         val current: AssetDecorator = getItem(position)
         holder.bind(current)
 
-        if ((position >= itemCount - 1)) {
+        if ((position >= itemCount - 2)) {
             listener.loadNextPage()
         }
     }

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.flow.collect
 import ru.sinitsyndev.rs_shcool_final_task.R
 import ru.sinitsyndev.rs_shcool_final_task.appComponent
-import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.AssetDetailsFragment
+import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.ui.AssetDetailsFragment
 import ru.sinitsyndev.rs_shcool_final_task.databinding.FragmentMainBinding
 import ru.sinitsyndev.rs_shcool_final_task.utils.COUNT_COLUMNS_ASSET_RECYCLER
 import javax.inject.Inject
@@ -119,7 +119,8 @@ class MainFragment : Fragment(), IAssetListener {
     }
 
     override fun openAssetDetail(id: String) {
-        view?.findNavController()?.navigate(R.id.action_mainFragment_to_assetDetailsFragment, bundleOf(AssetDetailsFragment.ASSET_ID to id))
+        view?.findNavController()?.navigate(R.id.action_mainFragment_to_assetDetailsFragment, bundleOf(
+            AssetDetailsFragment.ASSET_ID to id))
     }
 
     companion object {
