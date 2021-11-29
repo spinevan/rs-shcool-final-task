@@ -2,6 +2,7 @@ package ru.sinitsyndev.rs_shcool_final_task.mainScreen.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,20 +10,23 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import ru.sinitsyndev.rs_shcool_final_task.R
 import ru.sinitsyndev.rs_shcool_final_task.appComponent
 import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.ui.AssetDetailsFragment
 import ru.sinitsyndev.rs_shcool_final_task.databinding.FragmentMainBinding
+import ru.sinitsyndev.rs_shcool_final_task.mainScreen.domain.AssetDecorator
 import ru.sinitsyndev.rs_shcool_final_task.utils.COUNT_COLUMNS_ASSET_RECYCLER
+import ru.sinitsyndev.rs_shcool_final_task.utils.LOG_TAG
 import javax.inject.Inject
 
 class MainFragment : Fragment(), IAssetListener {
-
- //   private val viewModel: MainViewModel by viewModels()
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
@@ -43,6 +47,24 @@ class MainFragment : Fragment(), IAssetListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.viewState.collect { uiState ->
+                    when (uiState) {
+                        is MainScreenViewState.Loading -> {
+                            showLoading()
+                        }
+                        is MainScreenViewState.Error -> {
+                            showError(uiState.errorMessage)
+                        }
+                        is MainScreenViewState.AssetsList -> {
+                            showAssetsList(uiState.assets)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -80,33 +102,6 @@ class MainFragment : Fragment(), IAssetListener {
             }
 
         }
-
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.assetsList.collect { items ->
-                assetsAdapter.submitList(items)
-            }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.errorLoading.collect { value ->
-                binding.reloadBtn.isVisible = value
-            }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.errorLoading.collect { value ->
-                binding.reloadBtn.isVisible = value
-            }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.loading.collect { value ->
-                binding.swiperefresh.isRefreshing = value
-            }
-        }
-
-
     }
 
     override fun onDestroyView() {
@@ -123,6 +118,23 @@ class MainFragment : Fragment(), IAssetListener {
             AssetDetailsFragment.ASSET_ID to id))
     }
 
+    private fun showLoading() {
+        binding.swiperefresh.isRefreshing = true
+        binding.reloadBtn.isVisible = false
+    }
+
+    private fun showError(errorMessage: String) {
+        binding.swiperefresh.isRefreshing = false
+        Log.d(LOG_TAG, errorMessage)
+        binding.reloadBtn.isVisible = true
+    }
+
+    private fun showAssetsList(assets: List<AssetDecorator>) {
+        binding.swiperefresh.isRefreshing = false
+        binding.reloadBtn.isVisible = false
+        assetsAdapter.submitList(assets)
+    }
+
     companion object {
         @JvmStatic
         fun newInstance() =
@@ -131,6 +143,4 @@ class MainFragment : Fragment(), IAssetListener {
                 }
             }
     }
-
-
 }

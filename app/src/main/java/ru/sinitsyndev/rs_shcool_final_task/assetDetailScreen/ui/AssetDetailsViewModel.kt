@@ -17,35 +17,44 @@ import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.domain.AssetDetails
 import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.domain.GetAssetDetailsUseCase
 import ru.sinitsyndev.rs_shcool_final_task.data.models.Asset
 import ru.sinitsyndev.rs_shcool_final_task.mainScreen.domain.AssetDecorator
+import ru.sinitsyndev.rs_shcool_final_task.mainScreen.ui.MainScreenViewState
 import ru.sinitsyndev.rs_shcool_final_task.utils.LOG_TAG
 
 
 class AssetDetailsViewModel(
     private val getAssetDetailsUseCase: GetAssetDetailsUseCase,
-    id: String
+    val id: String
 ): ViewModel() {
 
     private val errorHandler = CoroutineExceptionHandler { _, exception ->
-        Log.d(LOG_TAG, "!!!222 CoroutineExceptionHandler $exception")
+        Log.d(LOG_TAG, "!!!getAssetDetailsUseCase CoroutineExceptionHandler $exception")
+        _viewState.value = AssetDetailScreenViewState.Error("$exception")
     }
 
-    private val _assetDetails = MutableSharedFlow<AssetDetailsDecorator>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-    val assetDetails: SharedFlow<AssetDetailsDecorator> = _assetDetails.asSharedFlow()
+//    private val _assetDetails = MutableSharedFlow<AssetDetailsDecorator>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+//    val assetDetails: SharedFlow<AssetDetailsDecorator> = _assetDetails.asSharedFlow()
+
+    private val _viewState: MutableStateFlow<AssetDetailScreenViewState> = MutableStateFlow(
+        AssetDetailScreenViewState.Loading)
+    val viewState: StateFlow<AssetDetailScreenViewState> get() = _viewState.asStateFlow()
 
     init {
+        loadDetails()
+    }
+
+    fun reload() {
+        loadDetails()
+    }
+
+    private fun loadDetails() {
         viewModelScope.launch(errorHandler) {
+            _viewState.value = AssetDetailScreenViewState.Loading
             val initAssetDetails = withContext(Dispatchers.IO) {
                 return@withContext getAssetDetailsUseCase.getDetails(id)
             }
-            _assetDetails.emitAll(
-                flow {
-                    emit(initAssetDetails)
-                }
-            )
+            _viewState.value = AssetDetailScreenViewState.AssetsDetails(initAssetDetails)
         }
     }
-
-
 }
 
 class AssetDetailsViewModelFactory @AssistedInject constructor(

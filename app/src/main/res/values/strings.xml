@@ -15,4 +15,5 @@
     <string name="max_supply">Max supply</string>
     <string name="change_24hr">Change % 24Hr</string>
     <string name="vwap_24hr">Vwap 24Hr</string>
+    <string name="error_loading">Error loading</string>
 </resources>

@@ -18,49 +18,39 @@ import javax.inject.Inject
 
 class MainViewModel(private val getAssetsListUseCase: GetAssetsListUseCase): ViewModel() {
 
-    //private val repo = CoinCapRepositoryImpl()
-
     private var assetsPage = START_ASSETS_PAGE
+    private var errorLoading = false
 
     private val errorHandler = CoroutineExceptionHandler { _, exception ->
         Log.d(LOG_TAG, "!!!CoroutineExceptionHandler $exception")
-        _errorLoading.value = true
-        _loading.value = false
+        errorLoading = true
+        _viewState.value = MainScreenViewState.Error("$exception")
     }
 
-    private val _assetsList = MutableSharedFlow<List<AssetDecorator>>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-    val assetsList: SharedFlow<List<AssetDecorator>> = _assetsList.asSharedFlow()
 
     private val assets: MutableList<AssetDecorator> = mutableListOf()
 
-    private val _errorLoading = MutableStateFlow(false)
-    val errorLoading: StateFlow<Boolean> get() = _errorLoading.asStateFlow()
-
-    private val _loading = MutableStateFlow(false)
-    val loading: StateFlow<Boolean> get() = _loading.asStateFlow()
+    private val _viewState: MutableStateFlow<MainScreenViewState> = MutableStateFlow(MainScreenViewState.Loading)
+    val viewState: StateFlow<MainScreenViewState> get() = _viewState.asStateFlow()
 
     init {
         viewModelScope.launch(errorHandler) {
-            _loading.value = true
+
+            _viewState.value = MainScreenViewState.Loading
             val initAssets = withContext(Dispatchers.IO){
                 return@withContext getAssetsListUseCase.exec(assetsPage)
             }
             assets.addAll(initAssets)
-           _assetsList.emitAll(
-               flow {
-                   emit(assets)
-               }
-           )
-            _errorLoading.value = false
-            _loading.value = false
+            _viewState.value = MainScreenViewState.AssetsList(assets)
         }
     }
 
 
 
     fun loadNextAssetsPage() {
-        if (_errorLoading.value) {
-           return
+        Log.d(LOG_TAG, "loadNextAssetsPage $assetsPage")
+        if (errorLoading) {
+            return
         }
 
         assetsPage++
@@ -69,25 +59,27 @@ class MainViewModel(private val getAssetsListUseCase: GetAssetsListUseCase): Vie
 
     fun resetPage() {
         assetsPage = START_ASSETS_PAGE
+        Log.d(LOG_TAG, "resetPage $assetsPage")
         assets.clear()
         loadAssets()
     }
 
     private fun loadAssets() {
-        _loading.value = true
-        _errorLoading.value = false
+        Log.d(LOG_TAG, "loadAssets $assetsPage")
+        _viewState.value = MainScreenViewState.Loading
 
         viewModelScope.launch(errorHandler) {
             val newAssets = withContext(Dispatchers.IO){
                 return@withContext getAssetsListUseCase.exec(assetsPage)
             }
             assets.addAll(newAssets)
-            _assetsList.tryEmit(assets.toList())
-            _loading.value = false
+            _viewState.value = MainScreenViewState.AssetsList(assets.toList())
+            errorLoading = false
         }
     }
 
     fun reloadOnError() {
+        Log.d(LOG_TAG, "reloadOnError $assetsPage")
         loadAssets()
     }
 
