@@ -34,15 +34,7 @@ class MainViewModel(private val getAssetsListUseCase: GetAssetsListUseCase): Vie
     val viewState: StateFlow<MainScreenViewState> get() = _viewState.asStateFlow()
 
     init {
-        viewModelScope.launch(errorHandler) {
-
-            _viewState.value = MainScreenViewState.Loading
-            val initAssets = withContext(Dispatchers.IO){
-                return@withContext getAssetsListUseCase.exec(assetsPage)
-            }
-            assets.addAll(initAssets)
-            _viewState.value = MainScreenViewState.AssetsList(assets)
-        }
+        loadAssets()
     }
 
 

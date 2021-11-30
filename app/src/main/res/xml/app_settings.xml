@@ -11,4 +11,12 @@
         android:title="@string/use_night_theme"
         android:defaultValue="false"
         />
+    <SeekBarPreference
+        android:key="price_history_days"
+        android:title="Дней истории цены"
+        android:defaultValue="7"
+        app:showSeekBarValue="true"
+        app:min="1"
+        android:max="30">
+    </SeekBarPreference>
 </PreferenceScreen>

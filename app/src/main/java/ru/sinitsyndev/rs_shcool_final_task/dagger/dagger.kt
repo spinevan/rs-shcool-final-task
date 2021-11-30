@@ -1,10 +1,12 @@
 package ru.sinitsyndev.rs_shcool_final_task.dagger
 
+import android.app.Application
 import android.content.Context
 import dagger.*
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.domain.GetAssetDetailsUseCase
+import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.domain.GetAssetPriceHistoryUseCase
 import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.ui.AssetDetailsFragment
 import ru.sinitsyndev.rs_shcool_final_task.data.CoinCapRepositoryImpl
 import ru.sinitsyndev.rs_shcool_final_task.data.ICoinCapRepository
@@ -53,12 +55,16 @@ class UseCaseModule {
 
     @Provides
     fun provideGetAssetDetailsUseCase(repository: CoinCapRepositoryImpl) = GetAssetDetailsUseCase(repository)
+
+    @Provides
+    fun provideGetAssetPriceHistoryUseCase(repository: CoinCapRepositoryImpl, context: Context) = GetAssetPriceHistoryUseCase(repository, context)
 }
 
 @Module
 class DataModule {
    @Provides
    fun provideCoinCapRepositoryImpl(client: CoinCapAPIRetrofitClient) = CoinCapRepositoryImpl(client)
+
 }
 
 @Module

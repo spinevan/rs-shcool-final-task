@@ -13,8 +13,10 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
 import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.domain.AssetDetailsDecorator
 import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.domain.GetAssetDetailsUseCase
+import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.domain.GetAssetPriceHistoryUseCase
 import ru.sinitsyndev.rs_shcool_final_task.data.models.Asset
 import ru.sinitsyndev.rs_shcool_final_task.mainScreen.domain.AssetDecorator
 import ru.sinitsyndev.rs_shcool_final_task.mainScreen.ui.MainScreenViewState
@@ -23,6 +25,7 @@ import ru.sinitsyndev.rs_shcool_final_task.utils.LOG_TAG
 
 class AssetDetailsViewModel(
     private val getAssetDetailsUseCase: GetAssetDetailsUseCase,
+    private val getAssetPriceHistoryUseCase: GetAssetPriceHistoryUseCase,
     val id: String
 ): ViewModel() {
 
@@ -49,6 +52,12 @@ class AssetDetailsViewModel(
     private fun loadDetails() {
         viewModelScope.launch(errorHandler) {
             _viewState.value = AssetDetailScreenViewState.Loading
+
+            val priseHistory = withContext(Dispatchers.IO) {
+                return@withContext getAssetPriceHistoryUseCase.getHistory(id)
+            }
+            _viewState.value = AssetDetailScreenViewState.AssetsPriceHistory(priseHistory)
+
             val initAssetDetails = withContext(Dispatchers.IO) {
                 return@withContext getAssetDetailsUseCase.getDetails(id)
             }
@@ -59,13 +68,14 @@ class AssetDetailsViewModel(
 
 class AssetDetailsViewModelFactory @AssistedInject constructor(
     private val getAssetDetailsUseCase: GetAssetDetailsUseCase,
+    private val getAssetPriceHistoryUseCase: GetAssetPriceHistoryUseCase,
     @Assisted("id") private val id: String
 ): ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         //require(modelClass == QuizViewModel::class)
-        return AssetDetailsViewModel(getAssetDetailsUseCase, id) as T
+        return AssetDetailsViewModel(getAssetDetailsUseCase, getAssetPriceHistoryUseCase, id) as T
     }
 
     @AssistedFactory
