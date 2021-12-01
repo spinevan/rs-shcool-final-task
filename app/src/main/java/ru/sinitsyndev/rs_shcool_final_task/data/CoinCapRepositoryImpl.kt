@@ -20,5 +20,4 @@ class CoinCapRepositoryImpl @Inject constructor(
     override suspend fun geAssetPriceHistory(id: String, start: Long, end: Long): List<AssetPriceHistory> {
         return client.getAssetPriceHistory(id, start, end).data
     }
-
 }

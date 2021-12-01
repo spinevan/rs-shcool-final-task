@@ -4,45 +4,34 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
-import androidx.core.view.marginTop
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.sinitsyndev.rs_shcool_final_task.MainActivity
 import ru.sinitsyndev.rs_shcool_final_task.R
 import ru.sinitsyndev.rs_shcool_final_task.appComponent
 import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.domain.AssetDetailsDecorator
-import ru.sinitsyndev.rs_shcool_final_task.databinding.FragmentAssetDetailsBinding
-import ru.sinitsyndev.rs_shcool_final_task.databinding.FragmentMainBinding
-import ru.sinitsyndev.rs_shcool_final_task.mainScreen.ui.MainScreenViewState
-import ru.sinitsyndev.rs_shcool_final_task.utils.LOG_TAG
-import javax.inject.Inject
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
-import java.util.concurrent.TimeUnit
-import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.formatter.IValueFormatter
 import ru.sinitsyndev.rs_shcool_final_task.data.models.AssetPriceHistory
+import ru.sinitsyndev.rs_shcool_final_task.databinding.FragmentAssetDetailsBinding
+import ru.sinitsyndev.rs_shcool_final_task.utils.LOG_TAG
 import ru.sinitsyndev.rs_shcool_final_task.utils.XAxisTimeFormatter
-import java.text.SimpleDateFormat
 import java.time.Instant
-import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
-
 
 class AssetDetailsFragment : Fragment() {
 
@@ -92,11 +81,11 @@ class AssetDetailsFragment : Fragment() {
                 }
             }
         }
-
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAssetDetailsBinding.inflate(inflater, container, false)
@@ -155,7 +144,7 @@ class AssetDetailsFragment : Fragment() {
 
     private fun initChart() {
         val xAxis = binding.chart.xAxis
-        xAxis.position = XAxis.XAxisPosition.TOP_INSIDE;
+        xAxis.position = XAxis.XAxisPosition.TOP_INSIDE
         xAxis.setDrawAxisLine(false)
         xAxis.setDrawGridLines(false)
         xAxis.setCenterAxisLabels(true)
@@ -172,16 +161,13 @@ class AssetDetailsFragment : Fragment() {
             binding.chart.xAxis.textColor = it.getColor(R.color.teal_700)
             binding.chart.legend.textColor = it.getColor(R.color.teal_700)
         }
-
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setDataChart(values: List<AssetPriceHistory>) {
         val listValues = mutableListOf<Entry>()
         values.map { item ->
-            //listValues.add(Entry(item.time.toFloat(), item.priceUsd ))
-            listValues.add(Entry(Instant.parse(item.date).toEpochMilli().toFloat(), item.priceUsd ))
+            listValues.add(Entry(Instant.parse(item.date).toEpochMilli().toFloat(), item.priceUsd))
         }
 
         val set1 = LineDataSet(listValues, "Price")
@@ -200,14 +186,6 @@ class AssetDetailsFragment : Fragment() {
     }
 
     companion object {
-        @JvmStatic
-        fun newInstance(id: String) =
-            AssetDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ASSET_ID, id)
-                }
-            }
-
         const val ASSET_ID = "ASSET_ID"
     }
 }

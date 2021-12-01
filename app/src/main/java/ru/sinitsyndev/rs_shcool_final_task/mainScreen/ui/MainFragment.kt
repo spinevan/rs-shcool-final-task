@@ -3,12 +3,12 @@ package ru.sinitsyndev.rs_shcool_final_task.mainScreen.ui
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -33,12 +33,11 @@ class MainFragment : Fragment(), IAssetListener {
 
     private val assetsAdapter = AssetAdapter(this)
 
-    private val viewModel: MainViewModel by viewModels{
+    private val viewModel: MainViewModel by viewModels {
         factory.create()
     }
     @Inject
     lateinit var factory: MainViewModelFactory.Factory
-
 
     override fun onAttach(context: Context) {
         context.appComponent.inject(this)
@@ -68,7 +67,8 @@ class MainFragment : Fragment(), IAssetListener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
@@ -91,7 +91,7 @@ class MainFragment : Fragment(), IAssetListener {
             swiperefresh.setOnRefreshListener {
                 viewModel.resetPage()
             }
-            topAppBar.setOnMenuItemClickListener {  menuItem ->
+            topAppBar.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.preferences -> {
                         view.findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
@@ -100,7 +100,6 @@ class MainFragment : Fragment(), IAssetListener {
                     else -> false
                 }
             }
-
         }
     }
 
@@ -114,8 +113,12 @@ class MainFragment : Fragment(), IAssetListener {
     }
 
     override fun openAssetDetail(id: String) {
-        view?.findNavController()?.navigate(R.id.action_mainFragment_to_assetDetailsFragment, bundleOf(
-            AssetDetailsFragment.ASSET_ID to id))
+        view?.findNavController()?.navigate(
+            R.id.action_mainFragment_to_assetDetailsFragment,
+            bundleOf(
+                AssetDetailsFragment.ASSET_ID to id
+            )
+        )
     }
 
     private fun showLoading() {

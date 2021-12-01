@@ -18,15 +18,15 @@ data class AssetDetailsDecorator(private val asset: Asset) {
     init {
         name = asset.name
         symbol = asset.symbol
-        marketCapUsd = String.format("%.6f", asset.marketCapUsd)+"$"
-        volumeUsd24Hr = String.format("%.6f", asset.volumeUsd24Hr)+"$"
+        marketCapUsd = String.format("%.6f", asset.marketCapUsd) + "$"
+        volumeUsd24Hr = String.format("%.6f", asset.volumeUsd24Hr) + "$"
         rank = asset.rank.toString()
-        price = String.format("%.6f", asset.priceUsd)+"$"
+        price = String.format("%.6f", asset.priceUsd) + "$"
         supply = String.format("%.6f", asset.supply)
 
         if (asset.maxSupply == null) {
             maxSupply = "-"
-        }else {
+        } else {
             maxSupply = String.format("%.6f", asset.maxSupply)
         }
         changePercent24Hr = String.format("%.6f", asset.changePercent24Hr)
@@ -37,5 +37,4 @@ data class AssetDetailsDecorator(private val asset: Asset) {
             vwap24Hr = String.format("%.6f", asset.vwap24Hr)
         }
     }
-
 }

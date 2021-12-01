@@ -23,6 +23,5 @@ class AssetViewHolder(
                 listener.openAssetDetail(asset.id)
             }
         }
-
     }
 }

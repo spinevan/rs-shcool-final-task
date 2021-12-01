@@ -1,10 +1,16 @@
 package ru.sinitsyndev.rs_shcool_final_task.dagger
 
-import android.app.Application
 import android.content.Context
-import dagger.*
+import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
+import dagger.Binds
+import dagger.BindsInstance
+import dagger.Component
+import dagger.Module
+import dagger.Provides
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import ru.sinitsyndev.rs_shcool_final_task.MainActivity
 import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.domain.GetAssetDetailsUseCase
 import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.domain.GetAssetPriceHistoryUseCase
 import ru.sinitsyndev.rs_shcool_final_task.assetDetailScreen.ui.AssetDetailsFragment
@@ -19,8 +25,6 @@ import ru.sinitsyndev.rs_shcool_final_task.utils.COIN_CAP_API_BASE_URL
 @Component(modules = [AppModule::class])
 interface AppComponent {
 
- //   fun application(): Application
-
     @Component.Builder
     interface Builder {
 
@@ -30,9 +34,9 @@ interface AppComponent {
         fun build(): AppComponent
     }
 
-   // fun inject(activity: MainActivity)
-   fun inject(mainFragment: MainFragment)
-   fun inject(assetDetailsFragment: AssetDetailsFragment)
+    fun inject(activity: MainActivity)
+    fun inject(mainFragment: MainFragment)
+    fun inject(assetDetailsFragment: AssetDetailsFragment)
 }
 
 @Module(includes = [UseCaseModule::class, AppBindModule::class, DataModule::class, NetworkModule::class])
@@ -57,14 +61,16 @@ class UseCaseModule {
     fun provideGetAssetDetailsUseCase(repository: CoinCapRepositoryImpl) = GetAssetDetailsUseCase(repository)
 
     @Provides
-    fun provideGetAssetPriceHistoryUseCase(repository: CoinCapRepositoryImpl, context: Context) = GetAssetPriceHistoryUseCase(repository, context)
+    fun provideGetAssetPriceHistoryUseCase(repository: CoinCapRepositoryImpl, prefs: SharedPreferences) = GetAssetPriceHistoryUseCase(repository, prefs)
 }
 
 @Module
 class DataModule {
-   @Provides
-   fun provideCoinCapRepositoryImpl(client: CoinCapAPIRetrofitClient) = CoinCapRepositoryImpl(client)
+    @Provides
+    fun provideCoinCapRepositoryImpl(client: CoinCapAPIRetrofitClient) = CoinCapRepositoryImpl(client)
 
+    @Provides
+    fun provideSharedPreferences(context: Context): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 }
 
 @Module
@@ -73,10 +79,9 @@ class NetworkModule {
     @Provides
     fun provideCoinCapAPI(): CoinCapAPI {
         val retrofit = Retrofit.Builder()
-        .addConverterFactory(MoshiConverterFactory.create())
-        .baseUrl(COIN_CAP_API_BASE_URL)
-        .build()
+            .addConverterFactory(MoshiConverterFactory.create())
+            .baseUrl(COIN_CAP_API_BASE_URL)
+            .build()
         return retrofit.create(CoinCapAPI::class.java)
     }
-
 }

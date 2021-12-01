@@ -16,4 +16,5 @@
     <string name="change_24hr">Change % 24Hr</string>
     <string name="vwap_24hr">Vwap 24Hr</string>
     <string name="error_loading">Error loading</string>
+    <string name="price_history_days">Price history, days</string>
 </resources>

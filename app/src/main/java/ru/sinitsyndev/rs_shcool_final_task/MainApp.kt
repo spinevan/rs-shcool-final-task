@@ -3,10 +3,9 @@ package ru.sinitsyndev.rs_shcool_final_task
 import android.app.Application
 import android.content.Context
 import ru.sinitsyndev.rs_shcool_final_task.dagger.AppComponent
-import ru.sinitsyndev.rs_shcool_final_task.dagger.AppModule
 import ru.sinitsyndev.rs_shcool_final_task.dagger.DaggerAppComponent
 
-//import ru.sinitsyndev.rs_shcool_final_task.dagger.DaggerAppComponent
+// import ru.sinitsyndev.rs_shcool_final_task.dagger.DaggerAppComponent
 
 class MainApp : Application() {
     lateinit var appComponent: AppComponent

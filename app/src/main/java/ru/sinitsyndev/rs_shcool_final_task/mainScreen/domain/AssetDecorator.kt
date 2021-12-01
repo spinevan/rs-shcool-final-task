@@ -16,9 +16,9 @@ data class AssetDecorator(private val asset: Asset) {
         id = asset.id
         name = asset.name
         symbol = asset.symbol
-        marketCapUsd = String.format("%.0f", asset.marketCapUsd)+"$"
-        volumeUsd24Hr = String.format("%.0f", asset.volumeUsd24Hr)+"$"
+        marketCapUsd = String.format("%.0f", asset.marketCapUsd) + "$"
+        volumeUsd24Hr = String.format("%.0f", asset.volumeUsd24Hr) + "$"
         rank = asset.rank.toString()
-        price = String.format("%.6f", asset.priceUsd)+"$"
+        price = String.format("%.6f", asset.priceUsd) + "$"
     }
 }

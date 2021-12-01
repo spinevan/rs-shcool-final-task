@@ -5,7 +5,6 @@ import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.sinitsyndev.rs_shcool_final_task.data.models.AssetDetail
-import ru.sinitsyndev.rs_shcool_final_task.data.models.AssetPriceHistory
 import ru.sinitsyndev.rs_shcool_final_task.data.models.AssetPriceHistoryData
 import ru.sinitsyndev.rs_shcool_final_task.data.models.AssetsList
 import ru.sinitsyndev.rs_shcool_final_task.utils.COIN_CAP_API_ITEMS_PER_PAGE
@@ -23,9 +22,10 @@ interface CoinCapAPI {
 
     @Headers(value = ["Accept-Encoding: deflate", "Authorization: Bearer $COIN_CAP_API_KEY"])
     @GET("/v2/assets/{id}/history")
-    suspend fun getAssetPriceHistory(@Path("id") id: String,
-                                     @Query("interval") interval: String,
-                                     @Query("start") start: Long,
-                                     @Query("end") end: Long,
+    suspend fun getAssetPriceHistory(
+        @Path("id") id: String,
+        @Query("interval") interval: String,
+        @Query("start") start: Long,
+        @Query("end") end: Long,
     ): AssetPriceHistoryData
 }

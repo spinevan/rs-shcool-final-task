@@ -2,8 +2,6 @@ package ru.sinitsyndev.rs_shcool_final_task.data.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.security.Timestamp
-import java.util.*
 
 @JsonClass(generateAdapter = true)
 data class AssetPriceHistory(

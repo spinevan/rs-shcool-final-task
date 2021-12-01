@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.sinitsyndev.rs_shcool_final_task.mainScreen.domain.AssetDecorator
@@ -16,7 +17,7 @@ import ru.sinitsyndev.rs_shcool_final_task.utils.LOG_TAG
 import ru.sinitsyndev.rs_shcool_final_task.utils.START_ASSETS_PAGE
 import javax.inject.Inject
 
-class MainViewModel(private val getAssetsListUseCase: GetAssetsListUseCase): ViewModel() {
+class MainViewModel(private val getAssetsListUseCase: GetAssetsListUseCase) : ViewModel() {
 
     private var assetsPage = START_ASSETS_PAGE
     private var errorLoading = false
@@ -27,7 +28,6 @@ class MainViewModel(private val getAssetsListUseCase: GetAssetsListUseCase): Vie
         _viewState.value = MainScreenViewState.Error("$exception")
     }
 
-
     private val assets: MutableList<AssetDecorator> = mutableListOf()
 
     private val _viewState: MutableStateFlow<MainScreenViewState> = MutableStateFlow(MainScreenViewState.Loading)
@@ -36,8 +36,6 @@ class MainViewModel(private val getAssetsListUseCase: GetAssetsListUseCase): Vie
     init {
         loadAssets()
     }
-
-
 
     fun loadNextAssetsPage() {
         Log.d(LOG_TAG, "loadNextAssetsPage $assetsPage")
@@ -61,7 +59,7 @@ class MainViewModel(private val getAssetsListUseCase: GetAssetsListUseCase): Vie
         _viewState.value = MainScreenViewState.Loading
 
         viewModelScope.launch(errorHandler) {
-            val newAssets = withContext(Dispatchers.IO){
+            val newAssets = withContext(Dispatchers.IO) {
                 return@withContext getAssetsListUseCase.exec(assetsPage)
             }
             assets.addAll(newAssets)
@@ -74,12 +72,11 @@ class MainViewModel(private val getAssetsListUseCase: GetAssetsListUseCase): Vie
         Log.d(LOG_TAG, "reloadOnError $assetsPage")
         loadAssets()
     }
-
 }
 
 class MainViewModelFactory(
     private val getAssetsListUseCase: GetAssetsListUseCase,
-): ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -87,7 +84,7 @@ class MainViewModelFactory(
     }
 
     class Factory @Inject constructor(private val getAssetsListUseCase: GetAssetsListUseCase) {
-        fun create(): MainViewModelFactory{
+        fun create(): MainViewModelFactory {
             return MainViewModelFactory(getAssetsListUseCase)
         }
     }
