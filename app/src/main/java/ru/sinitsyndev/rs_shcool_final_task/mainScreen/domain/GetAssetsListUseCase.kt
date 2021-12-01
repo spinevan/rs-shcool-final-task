@@ -5,9 +5,9 @@ import javax.inject.Inject
 
 class GetAssetsListUseCase @Inject constructor(
     private val repository: CoinCapRepositoryImpl
-) {
+): IGetAssetsListUseCase {
 
-    suspend fun exec(page: Int): List<AssetDecorator> {
+    override suspend fun exec(page: Int): List<AssetDecorator> {
 
         val listAssets = repository.geAssets(page)
         val res: MutableList<AssetDecorator> = mutableListOf()

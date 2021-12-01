@@ -9,11 +9,9 @@ import javax.inject.Inject
 
 class GetAssetPriceHistoryUseCase @Inject constructor(
     private val repository: CoinCapRepositoryImpl,
-    // private val context: Context
     private val prefs: SharedPreferences
-) {
-    suspend fun getHistory(id: String): List<AssetPriceHistory> {
-        // val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+): IGetAssetPriceHistoryUseCase {
+    override suspend fun getHistory(id: String): List<AssetPriceHistory> {
         val calendar = Calendar.getInstance()
         val to = calendar.timeInMillis
         val from = to - 60 * 60 * 24 * 1000 * prefs.getInt("price_history_days", PRICE_HISTORY_DAYS_DEFAULT)

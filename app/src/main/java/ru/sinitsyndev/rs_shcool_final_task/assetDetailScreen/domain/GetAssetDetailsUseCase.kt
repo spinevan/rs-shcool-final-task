@@ -5,9 +5,9 @@ import javax.inject.Inject
 
 class GetAssetDetailsUseCase @Inject constructor(
     private val repository: CoinCapRepositoryImpl
-) {
+): IGetAssetDetailsUseCase {
 
-    suspend fun getDetails(id: String): AssetDetailsDecorator {
+    override suspend fun getDetails(id: String): AssetDetailsDecorator {
 
         return AssetDetailsDecorator(repository.geAsset(id))
     }
