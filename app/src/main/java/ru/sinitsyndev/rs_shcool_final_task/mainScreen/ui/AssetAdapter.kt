@@ -34,6 +34,12 @@ class AssetAdapter(private val listener: IAssetListener) :
 
             override fun areContentsTheSame(oldItem: AssetDecorator, newItem: AssetDecorator): Boolean {
                 return oldItem.id == newItem.id
+                        && oldItem.name == newItem.name
+                        && oldItem.symbol == newItem.symbol
+                        && oldItem.marketCapUsd == newItem.marketCapUsd
+                        && oldItem.volumeUsd24Hr == newItem.volumeUsd24Hr
+                        && oldItem.rank == newItem.rank
+                        && oldItem.price == newItem.price
             }
 
             override fun getChangePayload(oldItem: AssetDecorator, newItem: AssetDecorator) = Any()
