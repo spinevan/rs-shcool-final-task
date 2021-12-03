@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <SwitchPreference
+        android:key="@string/use_night_theme"
+        android:title="@string/use_night_theme"
+        android:defaultValue="false"
+        />
+    <SeekBarPreference
+        android:key="price_history_days"
+        android:title="@string/price_history_days"
+        android:defaultValue="7"
+        app:showSeekBarValue="true"
+        app:min="1"
+        android:max="30">
+    </SeekBarPreference>
+</PreferenceScreen>

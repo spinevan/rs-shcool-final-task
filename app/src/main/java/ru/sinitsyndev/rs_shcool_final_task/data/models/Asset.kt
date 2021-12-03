@@ -1,4 +1,4 @@
-package ru.sinitsyndev.rs_shcool_final_task.mainScreen.data.models
+package ru.sinitsyndev.rs_shcool_final_task.data.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -14,4 +14,6 @@ data class Asset(
     @Json(name = "volumeUsd24Hr") val volumeUsd24Hr: Float,
     @Json(name = "priceUsd") val priceUsd: Float,
     @Json(name = "changePercent24Hr") val changePercent24Hr: Float,
+    @Json(name = "maxSupply") val maxSupply: Float?,
+    @Json(name = "vwap24Hr") val vwap24Hr: Float?
 )
